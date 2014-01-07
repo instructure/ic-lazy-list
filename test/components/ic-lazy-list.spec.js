@@ -39,10 +39,13 @@ test('loads records', function() {
   visit('/').then(function() {
     var component = Ember.View.views['lazy-list'];
     equal(component.get('data.length'), 3);
-    //window.scrollTo(0, 3000);
-    //Ember.run(null, function() {
-      //equal(component.get('data.length'), 5);
-    //});
+    Ember.run(function() {
+      document.body.scrollTop = 3000;
+      $(window).trigger('scroll');
+    });
+    Ember.run(null, function() {
+      equal(component.get('data.length'), 5);
+    });
   });
 });
 
