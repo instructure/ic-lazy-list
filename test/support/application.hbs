@@ -1,14 +1,13 @@
-hmm...
-
 {{#ic-lazy-list
+  id="lazy-list"
   href="http://example.com/users"
   data=users
 }}
 
   <ul>
-  {{#each users}}
-    <li style="height: 1000px;">{{name}}, {{id}}</li>
-  {{/each}}
+    {{#each users}}
+      <li style="height: 1000px;">{{name}}, {{id}}</li>
+    {{/each}}
   </ul>
 
 {{/ic-lazy-list }}
