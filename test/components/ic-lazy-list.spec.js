@@ -1,3 +1,33 @@
+var syncForTest = function(fn) {
+  var callSuper;
+
+  if (typeof fn !== "function") { callSuper = true; }
+
+  return function() {
+    var override = false, ret;
+
+    if (Ember.run && !Ember.run.currentRunLoop) {
+      Ember.run.begin();
+      override = true;
+    }
+
+    try {
+      if (callSuper) {
+        ret = this._super.apply(this, arguments);
+      } else {
+        ret = fn.apply(this, arguments);
+      }
+    } finally {
+      if (override) {
+        Ember.run.end();
+      }
+    }
+
+    return ret;
+  };
+};
+
+Ember.RSVP.Promise.prototype.then = syncForTest(Ember.RSVP.Promise.prototype.then);
 module('IcLazyList', {
   setup: function() {
     Ember.run(App, 'reset');
@@ -39,10 +69,12 @@ test('loads records', function() {
   visit('/').then(function() {
     var component = Ember.View.views['lazy-list'];
     equal(component.get('data.length'), 3);
-    //window.scrollTo(0, 3000);
-    //Ember.run(null, function() {
-      //equal(component.get('data.length'), 5);
-    //});
+    window.scrollTo(0, 3000);
+    stop();
+    Ember.run.next(null, function() {
+      start();
+      equal(component.get('data.length'), 5);
+    });
   });
 });
 
