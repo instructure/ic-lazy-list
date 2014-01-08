@@ -1,6 +1,6 @@
 module('IcLazyList', {
   setup: function() {
-    Ember.run(App, 'reset');
+    App.reset();
   }
 });
 
@@ -35,16 +35,20 @@ ic.ajax.defineFixture('http://example.com/users?page=2', {
   }
 });
 
-test('loads records', function() {
+test('loads initial records', function() {
+  visit('/').then(function() {
+    var component = Ember.View.views['lazy-list'];
+    equal(component.get('data.length'), 3);
+  });
+});
+
+test('loads initial records', function() {
   visit('/').then(function() {
     var component = Ember.View.views['lazy-list'];
     equal(component.get('data.length'), 3);
     window.scrollTo(0, 3000);
-    stop();
-    Ember.run.next(null, function() {
-      start();
-      equal(component.get('data.length'), 5);
-    });
+    $(window).trigger('scroll');
+    equal(component.get('data.length'), 5);
   });
 });
 
