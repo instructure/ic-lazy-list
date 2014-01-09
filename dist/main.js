@@ -61,10 +61,15 @@
       this.constructor.unregister(this);
     }.on('willDestroyElement'),
 
+    reset: function() {
+      this.setData();
+      this.loadRecords();
+    }.observes('href').on('didInsertElement'),
+
     setData: function() {
       this.set('data', Ember.ArrayProxy.create({content: []}));
       this.set('meta', Ember.Object.create());
-    }.on('init'),
+    },
 
     loadRecords: function(href) {
       href = href || this.get('href');
@@ -73,7 +78,7 @@
         this.ajaxSuccess.bind(this),
         this.ajaxError.bind(this)
       );
-    }.on('didInsertElement'),
+    },
 
     loadNextRecords: function() {
       this.loadRecords(this.get('meta.next'));
