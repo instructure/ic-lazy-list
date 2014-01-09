@@ -10,9 +10,12 @@
   }
 }(this, function(Ember, ajax) {
 
-  // taken from underscore, see license at
-  // https://github.com/jashkenas/underscore/blob/master/LICENSE
-  // will remove as soon as backburner run.throttle invokes on first call
+  /*
+   * taken from underscore, see license at
+   * https://github.com/jashkenas/underscore/blob/master/LICENSE
+   * will remove as soon as backburner run.throttle invokes on first call
+   */
+
   var throttle = function(func, wait) {
     var context, args, timeout, result;
     var previous = 0;
@@ -38,6 +41,10 @@
     };
   };
 
+  /*
+   * Lazily loads records from a url.
+   */
+
   var IcLazyList = Ember.Component.extend({
 
     tagName: 'ic-lazy-list',
@@ -62,23 +69,51 @@
     loadRecords: function(href) {
       href = href || this.get('href');
       this.set('isLoading', true);
-      ajax.raw(href).then(this.ajaxCallback.bind(this));
+      ajax.raw(href).then(
+        this.ajaxSuccess.bind(this),
+        this.ajaxError.bind(this)
+      );
     }.on('didInsertElement'),
 
     loadNextRecords: function() {
       this.loadRecords(this.get('meta.next'));
     },
 
-    ajaxCallback: function(result) {
+    ajaxSuccess: function(result) {
       this.get('data').pushObjects(this.normalize(result));
       this.set('meta', this.extractMeta(result));
       this.set('isLoading', false);
     },
 
+    ajaxError: function(result) {
+      this.sendAction('on-error', result);
+    },
+
+    /*
+     * Override this to normalize the data differently
+     */
+
     normalize: function(result) {
       var key = this.get('data-key');
       return key ? result.response[key] : result.response;
     },
+
+    /*
+     * Override this to extract the meta data from your request differently.
+     * In most of canvas-lms we use the link header, so it is the default
+     * for this component (see:
+     * https://canvas.instructure.com/doc/api/file.pagination.html)
+     *
+     * For example, to use a "meta" key instead you could do this:
+     *
+     * ```js
+     * IcLazyList.reopen({
+     *   extractMeta: function(result) {
+     *     return result.response.meta;
+     *   }
+     * });
+     * ```
+     */
 
     extractMeta: function(result) {
       var regex = /<(http.*?)>; rel="([a-z]*)",?/g;
