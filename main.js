@@ -4,8 +4,8 @@
       'ember',
       './lib/components/ic-lazy-list',
       './lib/templates'
-    ], function(Ember, IcLazyList) {
-      return factory(Ember, IcLazyList);
+    ], function(Ember, IcLazyListComponent) {
+      return factory(Ember, IcLazyListComponent);
     });
   } else if (typeof exports === 'object') {
     module.exports = factory(
@@ -14,14 +14,14 @@
       require('./lib/templates')
     );
   } else {
-    factory(Ember);
+    factory(Ember, ic.LazyListComponent);
   }
-}(this, function(Ember, IcLazyList) {
+}(this, function(Ember, IcLazyListComponent) {
 
   Ember.Application.initializer({
     name: 'ic-lazy-list',
     initialize: function(container, application) {
-      container.register('component:ic-lazy-list', IcLazyList);
+      container.register('component:ic-lazy-list', IcLazyListComponent);
     }
   });
 

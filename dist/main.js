@@ -6,7 +6,7 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(require('ember'), require('ic-ajax'));
   } else {
-    (root.ic || (root.ic = {})).IcLazyListComponent = factory(Ember, ic.ajax);
+    (root.ic || (root.ic = {})).LazyListComponent = factory(Ember, ic.ajax);
   }
 }(this, function(Ember, ajax) {
 
@@ -208,8 +208,8 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       'ember',
       './lib/components/ic-lazy-list',
       './lib/templates'
-    ], function(Ember, IcLazyList) {
-      return factory(Ember, IcLazyList);
+    ], function(Ember, IcLazyListComponent) {
+      return factory(Ember, IcLazyListComponent);
     });
   } else if (typeof exports === 'object') {
     module.exports = factory(
@@ -218,14 +218,14 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       require('./lib/templates')
     );
   } else {
-    factory(Ember);
+    factory(Ember, ic.LazyListComponent);
   }
-}(this, function(Ember, IcLazyList) {
+}(this, function(Ember, IcLazyListComponent) {
 
   Ember.Application.initializer({
     name: 'ic-lazy-list',
     initialize: function(container, application) {
-      container.register('component:ic-lazy-list', IcLazyList);
+      container.register('component:ic-lazy-list', IcLazyListComponent);
     }
   });
 
