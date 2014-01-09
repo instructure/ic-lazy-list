@@ -1,5 +1,3 @@
-// awful, awful UMD boilerplate, however, this makes it just work™ everywhere
-// make sure you add dependencies in all three places (amd, cjs, global)
 +function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define([
@@ -16,10 +14,7 @@
       require('./lib/templates')
     );
   } else {
-    factory(
-      Ember,
-      IcLazyList
-    );
+    factory(Ember);
   }
 }(this, function(Ember, IcLazyList) {
 
@@ -31,7 +26,7 @@
   });
 
   return {
-    IcLazyList: IcLazyList
+    IcLazyListComponent: IcLazyListComponent
   };
 
 });

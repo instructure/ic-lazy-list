@@ -6,7 +6,7 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(require('ember'), require('ic-ajax'));
   } else {
-    root.IcLazyList = factory(Ember, ic.ajax);
+    (root.ic || (root.ic = {})).IcLazyListComponent = factory(Ember, ic.ajax);
   }
 }(this, function(Ember, ajax) {
 
@@ -202,8 +202,6 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 });
 
 });
-// awful, awful UMD boilerplate, however, this makes it just work™ everywhere
-// make sure you add dependencies in all three places (amd, cjs, global)
 +function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define([
@@ -220,10 +218,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       require('./lib/templates')
     );
   } else {
-    factory(
-      Ember,
-      IcLazyList
-    );
+    factory(Ember);
   }
 }(this, function(Ember, IcLazyList) {
 
@@ -235,7 +230,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   });
 
   return {
-    IcLazyList: IcLazyList
+    IcLazyListComponent: IcLazyListComponent
   };
 
 });
