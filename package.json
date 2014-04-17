@@ -9,7 +9,7 @@
   "author": "Jon Doe <jon@example.com>",
   "license": "MIT",
   "dependencies": {
-    "ic-ajax": "~0.2.0"
+    "ic-ajax": "^1.0.4"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

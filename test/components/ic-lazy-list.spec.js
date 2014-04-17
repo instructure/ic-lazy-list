@@ -42,7 +42,7 @@ test('loads initial records', function() {
   });
 });
 
-test('loads initial records', function() {
+test('loads next page of records', function() {
   visit('/').then(function() {
     var component = Ember.View.views['lazy-list'];
     equal(component.get('data.length'), 3);
